@@ -1,17 +1,20 @@
-import requests
+import google.generativeai as genai
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 
-url = "http://127.0.0.1:8000/analyze-email"
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
+model = genai.GenerativeModel("gemini-2.5-flash")
 
-data = {
-    "email_text": "Hey, I bought your software yesterday but it keeps crashing whenever I try to open it. Fix this ASAP or give me my money back!"
-}
+try:
+    response = model.generate_content("Say hello")
 
+    print("SUCCESS")
+    print(response.text)
 
-print("Sending email to AI... Please wait...")
-response = requests.post(url, json=data)
+except Exception as e:
+    print("FAILED")
+    print(e)
 
-
-print("\n--- AI Result ---")
-print(response.json())

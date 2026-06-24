@@ -2,15 +2,40 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from dotenv import load_dotenv
+from langchain_ollama import OllamaLLM
 import os
 import google.generativeai as genai
 import json
 import imaplib
 import email
+import sqlite3
 from email.header import decode_header
+import bcrypt
+
 
 load_dotenv()
 app = FastAPI()
+
+conn = sqlite3.connect("users.db", check_same_thread=False)
+cursor = conn.cursor()
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    email TEXT UNIQUE,
+    password TEXT
+)
+""")
+
+# Ensure existing databases get the name column if it was created before the schema update.
+cursor.execute("PRAGMA table_info(users)")
+existing_columns = [row[1] for row in cursor.fetchall()]
+if "name" not in existing_columns:
+    cursor.execute("ALTER TABLE users ADD COLUMN name TEXT")
+    conn.commit()
+
+conn.commit()
 
 app.add_middleware(
     CORSMiddleware,
@@ -27,6 +52,30 @@ genai.configure(api_key=GEMINI_API_KEY)
 
 model = genai.GenerativeModel("gemini-2.5-flash")
 
+AI_PROVIDER = os.getenv("AI_PROVIDER", "gemini")
+
+OLLAMA_BASE_URL = "https://ollama-llm-995224459939.asia-southeast1.run.app"
+
+ollama_llm = OllamaLLM(
+    model="mistral:7b",
+    base_url=OLLAMA_BASE_URL,
+    timeout=120,
+)
+
+def get_ai_response(prompt):
+
+    print(f"Using AI Provider: {AI_PROVIDER}")
+
+    if AI_PROVIDER == "gemini":
+        response = model.generate_content(prompt)
+        return response.text
+
+    elif AI_PROVIDER == "ollama":
+        return ollama_llm.invoke(prompt)
+
+    else:
+        raise Exception("Invalid AI provider")
+
 
 # -----------------------------
 # Models
@@ -41,10 +90,86 @@ class AnalyzeInput(BaseModel):
     email_text: str
 
 
+class LoginInput(BaseModel):
+    email: str
+    password: str
+
+class SignupInput(BaseModel):
+    name: str
+    email: str
+    password: str
+
 # -----------------------------
 # Email Import Endpoint
 # -----------------------------
 
+ 
+@app.post("/signup")
+def signup(user: SignupInput):
+
+    cursor.execute(
+        "SELECT * FROM users WHERE email=?",
+        (user.email,)
+    )
+
+    existing_user = cursor.fetchone()
+
+    if existing_user:
+        return {
+            "status": "error",
+            "message": "Email already exists"
+        }
+
+    # Hash the password with bcrypt before storing it.
+    # bcrypt stores a salted hash and never saves the plain text password.
+    hashed_password = bcrypt.hashpw(user.password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+
+    cursor.execute(
+        "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+        (user.name, user.email, hashed_password)
+    )
+
+    conn.commit()
+
+    return {
+        "status": "success",
+        "message": "Account created",
+        "name": user.name
+    }
+
+@app.post("/login")
+def login(user: LoginInput):
+
+    # Lookup by email only, then verify the password against the bcrypt hash.
+    cursor.execute(
+        "SELECT name, email, password FROM users WHERE email=?",
+        (user.email,)
+    )
+
+    found_user = cursor.fetchone()
+
+    if not found_user:
+        return {
+            "status": "error",
+            "message": "Invalid email or password"
+        }
+
+    name, email_address, stored_password_hash = found_user
+
+    # bcrypt.checkpw returns True only if the provided password matches the stored hash.
+    if bcrypt.checkpw(user.password.encode("utf-8"), stored_password_hash.encode("utf-8")):
+        return {
+            "status": "success",
+            "message": "Login successful",
+            "name": name,
+            "email": email_address
+        }
+
+    return {
+        "status": "error",
+        "message": "Invalid email or password"
+    }
+ 
 @app.post("/fetch-emails")
 def fetch_emails(user_data: FetchEmailsInput):
     try:
@@ -68,7 +193,7 @@ def fetch_emails(user_data: FetchEmailsInput):
 
         email_ids = messages[0].split()
 
-        latest_email_ids = email_ids[-5:]
+        latest_email_ids = email_ids[-20:]
 
         fetched_emails = []
 
@@ -173,17 +298,35 @@ Analyze the customer email.
 Return ONLY valid JSON.
 
 Categories:
-- General Inquiry
-- Technical Support
-- Feedback & Suggestions
-- Complaints
-- Urgent Assistance
+
+- General Inquiry:
+  Questions, requests for information, or general communication.
+
+- Technical Support:
+  Reports of bugs, system errors, login issues, account access issues, or technical problems.
+
+- Feedback & Suggestions:
+  Positive feedback, compliments, suggestions, feature requests, appreciation, or customer opinions.
+
+- Complaints:
+  Customer dissatisfaction, negative experiences, service issues, or complaints.
+
+- Urgent Assistance:
+  Critical situations requiring immediate attention, urgent business impact, deadlines, or emergencies.
 
 Sentiments:
-- Appreciative
-- Neutral
-- Frustrated
-- Urgent / Anxious
+
+- Appreciative:
+  Positive feedback, compliments, gratitude, satisfaction.
+
+- Neutral:
+  Informational messages without strong emotion.
+
+- Frustrated:
+  Complaints, dissatisfaction, disappointment, anger.
+
+- Urgent / Anxious:
+  Stress, urgency, panic, immediate assistance required.
 
 Customer Email:
 {data.email_text}
@@ -197,9 +340,7 @@ Return exactly:
 }}
 """
 
-        response = model.generate_content(prompt)
-
-        result_text = response.text.strip()
+        result_text = get_ai_response(prompt).strip()
 
         start = result_text.find("{")
         end = result_text.rfind("}") + 1
@@ -214,7 +355,8 @@ Return exactly:
         print("GEMINI ERROR:", str(e))
 
         return {
-            "category": "General Inquiry",
-            "sentiment": "Neutral",
-            "reply": "Thank you for contacting us. We will review your request and get back to you shortly."
+           "status": "error",
+        "message": f"AI Provider Error: {str(e)}"
+
         }
+    
