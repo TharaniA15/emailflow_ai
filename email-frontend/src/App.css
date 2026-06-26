@@ -1,0 +1,686 @@
+/* ============================================
+   PROFESSIONAL COLOR PALETTE & DESIGN SYSTEM
+   ============================================ */
+
+:root {
+  /* Primary Colors */
+  --primary: #4f46e5;
+  --primary-dark: #4338ca;
+  --primary-light: #6366f1;
+  
+  /* Secondary Colors */
+  --secondary: #10b981;
+  --secondary-dark: #059669;
+  --secondary-light: #34d399;
+  
+  /* Accent Colors */
+  --accent: #3b82f6;
+  --accent-light: #38bdf8;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  
+  /* Backgrounds */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-tertiary: #f3f4f6;
+  --bg-dark: #0f172a;
+  
+  /* Text Colors */
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+  --text-light: #e5e7eb;
+  
+  /* Borders & Dividers */
+  --border-color: #e5e7eb;
+  --border-color-light: #f3f4f6;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* ============================================
+   APP CONTAINER STYLES
+   ============================================ */
+
+.App {
+  text-align: center;
+  background-color: var(--bg-secondary);
+  min-height: 100vh;
+}
+
+/* ============================================
+   AUTHENTICATION PAGE STYLES
+   ============================================ */
+
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+}
+
+.auth-left-panel {
+  background-color: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 8%;
+}
+
+.auth-right-panel {
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 8%;
+  color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-right-panel::before {
+  content: '';
+  position: absolute;
+  top: -100px;
+  right: -100px;
+  width: 400px;
+  height: 400px;
+  background: rgba(59, 130, 246, 0.1);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.auth-right-panel::after {
+  content: '';
+  position: absolute;
+  bottom: -50px;
+  left: -50px;
+  width: 300px;
+  height: 300px;
+  background: rgba(52, 211, 153, 0.1);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 50px;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.5px;
+}
+
+.brand-logo svg {
+  margin-right: 12px;
+  color: var(--primary);
+  font-size: 28px;
+}
+
+.auth-form-container h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.auth-form-description {
+  color: var(--text-secondary);
+  font-size: 16px;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+.form-input {
+  height: 45px !important;
+  border-radius: 8px !important;
+  background-color: var(--bg-secondary) !important;
+  border: 1px solid var(--border-color) !important;
+  font-size: 14px !important;
+  transition: all 0.3s ease;
+}
+
+.form-input:hover {
+  border-color: var(--primary) !important;
+}
+
+.form-input:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+}
+
+.form-label {
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.btn-primary {
+  height: 45px !important;
+  border-radius: 8px !important;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%) !important;
+  border: none !important;
+  font-weight: 600 !important;
+  font-size: 16px !important;
+  letter-spacing: 0.3px !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 6px rgba(79, 70, 229, 0.2) !important;
+}
+
+.btn-primary:hover {
+  box-shadow: 0 8px 12px rgba(79, 70, 229, 0.3) !important;
+  transform: translateY(-2px) !important;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, var(--success) 0%, var(--secondary-light) 100%) !important;
+  box-shadow: 0 4px 6px rgba(16, 185, 129, 0.2) !important;
+}
+
+.btn-success:hover {
+  box-shadow: 0 8px 12px rgba(16, 185, 129, 0.3) !important;
+}
+
+.divider-text {
+  text-align: center;
+  border-bottom: 1px solid var(--border-color);
+  line-height: 0.1em;
+  margin: 24px 0;
+  color: var(--text-tertiary);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.divider-text span {
+  background: var(--bg-primary);
+  padding: 0 12px;
+}
+
+.auth-footer-text {
+  text-align: center;
+  margin-top: 24px;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.auth-footer-text a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.auth-footer-text a:hover {
+  color: var(--primary-dark);
+  text-decoration: underline;
+}
+
+/* ============================================
+   DASHBOARD STYLES
+   ============================================ */
+
+.dashboard-layout {
+  background-color: var(--bg-secondary);
+  min-height: 100vh;
+}
+
+.dashboard-header {
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.dashboard-logo {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dashboard-content {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.stats-card {
+  background-color: var(--bg-primary);
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+  border-color: var(--primary);
+}
+
+.stats-card-icon {
+  font-size: 28px;
+  margin-bottom: 12px;
+  color: var(--primary);
+}
+
+.stats-card-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.stats-card-label {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.email-table {
+  background-color: var(--bg-primary);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+.email-table table {
+  width: 100%;
+}
+
+.email-table thead {
+  background-color: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.email-table thead th {
+  padding: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: left;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.email-table tbody tr {
+  border-bottom: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+}
+
+.email-table tbody tr:hover {
+  background-color: var(--bg-secondary);
+}
+
+.email-table tbody td {
+  padding: 14px 16px;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+/* ============================================
+   TAG & BADGE STYLES
+   ============================================ */
+
+.tag-sentiment-positive {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+  color: var(--success) !important;
+  border: 1px solid var(--success) !important;
+}
+
+.tag-sentiment-negative {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  color: var(--danger) !important;
+  border: 1px solid var(--danger) !important;
+}
+
+.tag-sentiment-neutral {
+  background-color: rgba(59, 130, 246, 0.1) !important;
+  color: var(--accent) !important;
+  border: 1px solid var(--accent) !important;
+}
+
+/* ============================================
+   MODAL & OVERLAY STYLES
+   ============================================ */
+
+.modal-overlay {
+  background-color: rgba(15, 23, 42, 0.5) !important;
+}
+
+.modal-content {
+  background-color: var(--bg-primary) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-xl) !important;
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--border-color) !important;
+  padding: 20px 24px !important;
+}
+
+.modal-header h2 {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+  margin: 0 !important;
+}
+
+/* ============================================
+   LOADING & ANIMATION STYLES
+   ============================================ */
+
+.loading-spinner {
+  color: var(--primary);
+}
+
+.pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   ANT DESIGN COMPONENT OVERRIDES
+   ============================================ */
+
+/* Ant Design Table Customization */
+.ant-table {
+  background-color: transparent !important;
+}
+
+.ant-table-thead > tr > th {
+  background-color: var(--bg-tertiary) !important;
+  color: var(--text-primary) !important;
+  font-weight: 600 !important;
+  border-bottom: 2px solid var(--border-color) !important;
+  padding: 12px 16px !important;
+  font-size: 13px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+.ant-table-tbody > tr {
+  transition: all 0.2s ease !important;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background-color: var(--bg-secondary) !important;
+}
+
+.ant-table-tbody > tr > td {
+  padding: 12px 16px !important;
+  border-bottom: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+  font-size: 14px !important;
+}
+
+/* Ant Design Tabs */
+.ant-tabs-tab {
+  color: var(--text-secondary) !important;
+  border-radius: 8px 8px 0 0 !important;
+  font-weight: 500 !important;
+  margin-right: 8px !important;
+}
+
+.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: var(--primary) !important;
+  font-weight: 600 !important;
+}
+
+.ant-tabs-ink-bar {
+  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%) !important;
+}
+
+/* Ant Design Button Overrides */
+.ant-btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%) !important;
+  border: none !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 6px rgba(79, 70, 229, 0.15) !important;
+}
+
+.ant-btn-primary:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 12px rgba(79, 70, 229, 0.25) !important;
+}
+
+.ant-btn-default {
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+  transition: all 0.2s ease !important;
+}
+
+.ant-btn-default:hover {
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+  box-shadow: 0 2px 6px rgba(79, 70, 229, 0.1) !important;
+}
+
+.ant-btn-text {
+  color: var(--text-primary) !important;
+}
+
+.ant-btn-text:hover {
+  color: var(--primary) !important;
+}
+
+/* Ant Design Input */
+.ant-input,
+.ant-input-number {
+  border: 1px solid var(--border-color) !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+}
+
+.ant-input:hover,
+.ant-input-number:hover {
+  border-color: var(--primary) !important;
+}
+
+.ant-input:focus,
+.ant-input-number:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1) !important;
+}
+
+.ant-input-affix-wrapper {
+  border: 1px solid var(--border-color) !important;
+  border-radius: 8px !important;
+}
+
+/* Ant Design Card */
+.ant-card {
+  border: 1px solid var(--border-color) !important;
+  border-radius: 12px !important;
+  transition: all 0.3s ease !important;
+}
+
+.ant-card-head {
+  border-bottom: 1px solid var(--border-color) !important;
+  background-color: var(--bg-secondary) !important;
+}
+
+.ant-card-head-title {
+  font-weight: 600 !important;
+  color: var(--text-primary) !important;
+}
+
+/* Ant Design Modal */
+.ant-modal-content {
+  border-radius: 12px !important;
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.ant-modal-header {
+  border-bottom: 1px solid var(--border-color) !important;
+  background-color: var(--bg-primary) !important;
+  border-radius: 12px 12px 0 0 !important;
+}
+
+.ant-modal-title {
+  color: var(--text-primary) !important;
+  font-weight: 600 !important;
+}
+
+/* Ant Design Tag */
+.ant-tag {
+  border-radius: 6px !important;
+  padding: 4px 12px !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  border: none !important;
+}
+
+/* Ant Design Spin */
+.ant-spin-spinning {
+  color: var(--primary) !important;
+}
+
+/* Ant Design Form */
+.ant-form-item-label > label {
+  font-weight: 600 !important;
+  color: var(--text-secondary) !important;
+}
+
+.ant-form-item-required::before {
+  color: var(--danger) !important;
+}
+
+/* Ant Design Layout */
+.ant-layout {
+  background-color: var(--bg-secondary) !important;
+}
+
+/* Ant Design Popconfirm */
+.ant-popover-inner {
+  border-radius: 8px !important;
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.ant-popover-arrow-content {
+  background-color: var(--bg-primary) !important;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+  .auth-container {
+    flex-direction: column;
+  }
+
+  .auth-left-panel,
+  .auth-right-panel {
+    padding: 40px 6%;
+  }
+
+  .auth-form-container h2 {
+    font-size: 24px;
+  }
+
+  .dashboard-content {
+    padding: 16px;
+  }
+
+  .stats-card {
+    margin-bottom: 16px;
+  }
+
+  .ant-table {
+    font-size: 12px !important;
+  }
+
+  .ant-table-thead > tr > th,
+  .ant-table-tbody > tr > td {
+    padding: 10px 8px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-left-panel,
+  .auth-right-panel {
+    padding: 30px 5%;
+  }
+
+  .brand-logo {
+    margin-bottom: 30px;
+  }
+
+  .auth-form-container h2 {
+    font-size: 20px;
+  }
+
+  .form-input {
+    height: 40px !important;
+  }
+
+  .btn-primary {
+    height: 40px !important;
+    font-size: 14px !important;
+  }
+
+  .ant-table-wrapper {
+    overflow-x: auto !important;
+  }
+}

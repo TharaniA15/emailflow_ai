@@ -1,0 +1,40 @@
+services:
+  backend:
+    build: .
+    container_name: emailflow-backend
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - ./data:/app/data
+
+    networks:
+      - emailflow-network
+
+  frontend:
+    build:
+      context: ./email-frontend
+
+    container_name: emailflow-frontend
+
+    restart: unless-stopped
+
+    ports:
+      - "3000:80"
+
+    depends_on:
+      - backend
+
+    networks:
+      - emailflow-network
+
+networks:
+  emailflow-network:
+    driver: bridge
+
+    
